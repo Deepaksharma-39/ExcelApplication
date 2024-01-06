@@ -81,16 +81,9 @@ export const AuthProvider = (props) => {
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
-
+   
       dispatch({
         type: HANDLERS.INITIALIZE,
-        payload: user
       });
     } else {
       dispatch({
@@ -107,52 +100,41 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
-
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
-
     try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
+      // Make API request to authenticate user
+      const response = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // Check if the API request was successful (status code 200)
+      if (response.ok) {
+        // Parse the response to get the authentication token
+        const { token, user } = await response.json();
+
+        // Save the authentication token in sessionStorage
+        window.sessionStorage.setItem('authToken', token);
+        window.sessionStorage.setItem('authenticated', 'true');
+        // Update the local state with user information
+        dispatch({
+          type: HANDLERS.SIGN_IN,
+          payload: user,
+        });
+      } else {
+        // If the API request was not successful, throw an error
+        alert("Wrong credentials")
+        throw new Error('Authentication failed');
+      }
+    }  catch (err) {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
-
-  const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+ 
   };
 
   const signOut = () => {
@@ -165,9 +147,7 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
-        signUp,
         signOut
       }}
     >
