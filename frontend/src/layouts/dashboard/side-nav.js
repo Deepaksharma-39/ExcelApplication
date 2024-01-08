@@ -2,7 +2,6 @@ import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
   Button,
@@ -80,12 +79,7 @@ export const SideNav = (props) => {
                 Production
               </Typography>
             </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
-            >
-              <ChevronUpDownIcon />
-            </SvgIcon>
+          
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
