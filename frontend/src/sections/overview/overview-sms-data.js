@@ -12,9 +12,18 @@ import {
   Typography,
 } from "@mui/material";
 import { ArrowRightIcon } from "@mui/x-date-pickers";
+import { filterDataByStatus } from "src/utils/filter-data";
+import { useState } from "react";
 
 export const OverviewSmsData = (props) => {
   const { sx, data } = props;
+  const [text,setText]=useState("Used");
+  let callingData = filterDataByStatus(data, "SMS", text.toUpperCase());
+ 
+  const toggle=(text)=>{
+    let newText=text==="Used"? "Unused" :"Used";
+    setText(newText);
+  }
 
   return (
     <Card sx={sx}>
@@ -22,9 +31,9 @@ export const OverviewSmsData = (props) => {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              telecalling used Data
+            {`SMS ${text} Data`}
             </Typography>
-            <Typography variant="h4">{data.length}</Typography>
+            <Typography variant="h4">{callingData.length}</Typography>
            
           </Stack>
           <Avatar
@@ -41,6 +50,7 @@ export const OverviewSmsData = (props) => {
         </Stack>
 
         <CardActions sx={{ justifyContent: "flex-end" }} style={{ "marginBottom": "-25px" }}>
+         
           <Button
             color="inherit"
             endIcon={
@@ -50,20 +60,11 @@ export const OverviewSmsData = (props) => {
             }
             size="small"
             variant="text"
+            onClick={()=>{
+              toggle(text);
+            }}
           >
-            View Used
-          </Button>
-          <Button
-            color="inherit"
-            endIcon={
-              <SvgIcon fontSize="small">
-                <ArrowRightIcon />
-              </SvgIcon>
-            }
-            size="small"
-            variant="text"
-          >
-            View Unused
+             {`View ${text==="Used"?"Unused":"Used"}`}
           </Button>
         </CardActions>
       </CardContent>

@@ -13,25 +13,26 @@ import {
 } from "@mui/material";
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { useState } from "react";
-import { filterDataByStatus } from "src/utils/filter-data";
+import { filterDataByBank } from "src/utils/filter-data";
 
-export const OverviewEmailData = (props) => {
+export const OverviewSBIBankData = (props) => {
   const { sx, data } = props;
-  const [text,setText]=useState("Used");
-  let callingData = filterDataByStatus(data, "EMAIL", text.toUpperCase());
+  const [text,setText]=useState("APPROVED");
+  let callingData = filterDataByBank(data, "LOGIN BANK 2", "SBI BANK", "BANKS STATUS_1",text.toUpperCase());
  
   const toggle=(text)=>{
-    let newText=text==="Used"? "Unused" :"Used";
+    let newText=text==="APPROVED"? "DECLINED" :"APPROVED";
     setText(newText);
   }
 
+ 
   return (
     <Card sx={sx}>
       <CardContent>
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-            {`email ${text} Data`}
+              {`sbi ${text} Data`}
             </Typography>
             <Typography variant="h4">{callingData.length}</Typography>
            
@@ -63,17 +64,16 @@ export const OverviewEmailData = (props) => {
               toggle(text);
             }}
           >
-            {`View ${text==="Used"?"Unused":"Used"}`}
+            {`View ${text==="APPROVED"?"Declined":"Approved"}`}
           </Button>
-         
+          
         </CardActions>
       </CardContent>
     </Card>
   );
 };
 
-OverviewEmailData.propTypes = {
- 
+OverviewSBIBankData.propTypes = {
   data: PropTypes.array.isRequired,
   sx: PropTypes.object,
 };

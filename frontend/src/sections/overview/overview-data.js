@@ -11,10 +11,12 @@ import {
 } from "@mui/material";
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
+import { useRouter } from "next/router";
+
 
 export const OverviewData = (props) => {
   const { sx, value } = props;
-
+  const router = useRouter();
   return (
     <>
     
@@ -52,6 +54,9 @@ export const OverviewData = (props) => {
             }
             size="small"
             variant="caption"
+            onClick={()=>{
+              router.push({ pathname: '/customers'});
+            }}
             >
             View all
           </Button>

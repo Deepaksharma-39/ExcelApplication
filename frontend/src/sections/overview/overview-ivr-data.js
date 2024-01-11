@@ -12,9 +12,18 @@ import {
   Typography,
 } from "@mui/material";
 import { ArrowRightIcon } from "@mui/x-date-pickers";
+import { useState } from "react";
+import { filterDataByStatus } from "src/utils/filter-data";
 
 export const OverviewIVRData = (props) => {
   const { sx, data } = props;
+  const [text,setText]=useState("Used");
+  let callingData = filterDataByStatus(data, "IVR", text.toUpperCase());
+ 
+  const toggle=(text)=>{
+    let newText=text==="Used"? "Unused" :"Used";
+    setText(newText);
+  }
 
   return (
     <Card sx={sx}>
@@ -22,9 +31,9 @@ export const OverviewIVRData = (props) => {
         <Stack alignItems="flex-start" direction="row" justifyContent="space-between" spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" variant="overline">
-              IVR used Data
+            {`ivr ${text} Data`}
             </Typography>
-            <Typography variant="h4">{data.length}</Typography>
+            <Typography variant="h4">{callingData.length}</Typography>
            
           </Stack>
           <Avatar
@@ -50,21 +59,13 @@ export const OverviewIVRData = (props) => {
             }
             size="small"
             variant="text"
+            onClick={()=>{
+              toggle(text);
+            }}
           >
-            View Used
+             {`View ${text==="Used"?"Unused":"Used"}`}
           </Button>
-          <Button
-            color="inherit"
-            endIcon={
-              <SvgIcon fontSize="small">
-                <ArrowRightIcon />
-              </SvgIcon>
-            }
-            size="small"
-            variant="text"
-          >
-            View Unused
-          </Button>
+         
         </CardActions>
       </CardContent>
     </Card>

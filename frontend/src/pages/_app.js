@@ -10,6 +10,7 @@ import { createTheme } from 'src/theme';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
 import { DataConsumer, DataProvider } from 'src/contexts/data-context';
+import "../css/style.css"
 
 const clientSideEmotionCache = createEmotionCache();
 
