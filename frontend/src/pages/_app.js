@@ -38,7 +38,7 @@ const App = (props) => {
               <CssBaseline />
               <AuthConsumer>
                 {(auth) => (
-                  auth.isLoading ? <SplashScreen /> : (
+                   auth.isLoading || !auth.isContextInitialized ? <SplashScreen /> : (
                     <DataConsumer>
                       {(dataContext) =>
                         getLayout(<Component {...pageProps} auth={auth} dataContext={dataContext} />)

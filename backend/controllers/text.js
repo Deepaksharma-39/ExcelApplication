@@ -17,6 +17,27 @@ export const getResult = async (req, res) => {
   }
 };
 
+export const upload = async (req, res) => {
+
+  try {
+
+    await Test.deleteMany();
+
+    const newData = req.body; // Replace with your actual way of getting new data
+    await Test.insertMany(newData)
+
+    // Send the result as JSON
+    
+    res.status(200).json({ success: true, message: "overwrite successful"});
+    
+  } catch (err) {
+    console.error("test error : ", err);
+    res.status(500).json({ success: false, message: "Internal Server error" });
+  }
+};
+
+
+
 export const downloadData = async (req, res) => {
   try {
 

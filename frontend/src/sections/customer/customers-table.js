@@ -21,7 +21,13 @@ export const CustomersTable = (props) => {
     rowsPerPage = 0,
   } = props;
 
-  const keys = Object.keys(items[0]);
+  let keys;
+  if (items.length >0) {
+    keys = Object.keys(items[0]);
+  } else {
+    keys = [];
+  }
+
   return (
     <Card>
       <Scrollbar>
@@ -29,7 +35,11 @@ export const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {keys.map((key) => (key === "_id" ? null : <TableCell key={key}>{key}</TableCell>))}
+                {items.length > 0 ? (
+                  keys.map((key) => (key === "_id" ? null : <TableCell key={key}>{key}</TableCell>))
+                ) : (
+                  <h3>No Data present in database</h3>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -51,7 +61,7 @@ export const CustomersTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25,50,100]}
+        rowsPerPageOptions={[5, 10, 25, 50, 100]}
       />
     </Card>
   );

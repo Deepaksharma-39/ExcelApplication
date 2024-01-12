@@ -8,7 +8,7 @@ import { applyPagination } from "src/utils/apply-pagination";
 import { useData } from "src/hooks/use-data";
 import { Button, Col, FormGroup, Input, Row } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { compareDataArrays, readUploadFile } from "src/utils/upload-data";
+import { compareDataArrays, readUploadFile, updateInDB } from "src/utils/upload-data";
 import { read, utils } from "xlsx";
 
 const useCustomers = (data, page, rowsPerPage) => {
@@ -20,14 +20,12 @@ const useCustomers = (data, page, rowsPerPage) => {
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [value,setValue]=useState([]);
   const { data } = useData();
-  const renderData=value.length>0?value:data;
+  const [value, setValue] = useState([]);
+  const renderData = value.length > 0 ? value : data;
   const customers = useCustomers(renderData, page, rowsPerPage);
   const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-
-
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -50,7 +48,7 @@ const Page = () => {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const result = utils.sheet_to_json(worksheet);
-       setValue(result)
+        setValue(result);
         setLoading(false);
       };
       reader.readAsArrayBuffer(file);
@@ -60,9 +58,8 @@ const Page = () => {
   const removeFile = () => {
     setSelectedFile(null);
     setValue([]);
-    window.location.reload()
+    window.location.reload();
   };
-
 
   return (
     <>
@@ -95,31 +92,49 @@ const Page = () => {
                       </FormGroup>
                     </Col>
                     <Col md="6 text-left">
-                    {selectedFile?.name && (
-              <Button disabled={loading} color="success" onClick={()=>{
-               const result= compareDataArrays(data,value)
-               setValue(result.reverse());
-              }}>
-                {"Read Data"}
-              </Button>
-            )}{" "}
-                    {selectedFile?.name && (
-              <Button disabled={loading} color="success" onClick={()=>{
-               const result= compareDataArrays(data,value)
-               setValue(result.reverse());
-              }}>
-                {"Upload Data"}
-              </Button>
-            )}{" "}
-            {selectedFile?.name && (
-              <Button disabled={loading} color="danger" onClick={removeFile}>
-                {"Reset"}
-              </Button>
-            )}{" "}
+                      {selectedFile?.name && (
+                        <Button
+                          disabled={loading}
+                          color="success"
+                          onClick={() => {
+                            const result = compareDataArrays(data, value);
+                            const res = updateInDB(result);
+
+                            res
+                              .then((message) => {
+                                console.log("Success:", message);
+                                console.log(res);
+                                setValue(result.reverse());
+                                alert('Data Uploaded successfully')
+                              })
+                              .catch((error) => {
+                                console.error("Error:", error);
+                                alert("Data upload Failed")
+                              });
+                          }}
+                        >
+                          {"Read Data"}
+                        </Button>
+                      )}{" "}
+                      {selectedFile?.name && (
+                        <Button
+                          disabled={loading}
+                          color="success"
+                          onClick={() => {
+                            const result = compareDataArrays(data, value);
+                            setValue(result.reverse());
+                          }}
+                        >
+                          {"Upload Data"}
+                        </Button>
+                      )}{" "}
+                      {selectedFile?.name && (
+                        <Button disabled={loading} color="danger" onClick={removeFile}>
+                          {"Reset"}
+                        </Button>
+                      )}{" "}
                     </Col>
-                   
                   </Row>
-                
                 </Stack>
               </Stack>
             </Stack>

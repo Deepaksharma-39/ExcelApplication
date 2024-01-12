@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const HANDLERS = {
@@ -63,6 +63,7 @@ export const AuthProvider = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const initialized = useRef(false);
+  const [isContextInitialized, setContextInitialized] = useState(false);
 
   const initialize = async () => {
     // Prevent from calling twice in development mode with React.StrictMode enabled
@@ -81,7 +82,7 @@ export const AuthProvider = (props) => {
     }
 
     if (isAuthenticated) {
-   
+     const user=window.sessionStorage.getItem('user');
       dispatch({
         type: HANDLERS.INITIALIZE,
       });
@@ -90,6 +91,7 @@ export const AuthProvider = (props) => {
         type: HANDLERS.INITIALIZE
       });
     }
+    setContextInitialized(true);
   };
 
   useEffect(
@@ -120,6 +122,7 @@ export const AuthProvider = (props) => {
         // Save the authentication token in sessionStorage
         window.sessionStorage.setItem('authToken', token);
         window.sessionStorage.setItem('authenticated', 'true');
+        window.sessionStorage.setItem('user', JSON.stringify(user));
         // Update the local state with user information
         dispatch({
           type: HANDLERS.SIGN_IN,
@@ -148,7 +151,8 @@ export const AuthProvider = (props) => {
       value={{
         ...state,
         signIn,
-        signOut
+        signOut,
+        isContextInitialized 
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import SpeakerWaveIcon from '@heroicons/react/24/solid/SpeakerWaveIcon';
 
 import {
   Avatar,
@@ -14,6 +14,8 @@ import {
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { filterDataByStatus } from "src/utils/filter-data";
+import { handleDownload } from "src/utils/download-data";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 
 export const OverviewIVRData = (props) => {
   const { sx, data } = props;
@@ -21,7 +23,7 @@ export const OverviewIVRData = (props) => {
   let callingData = filterDataByStatus(data, "IVR", text.toUpperCase());
  
   const toggle=(text)=>{
-    let newText=text==="Used"? "Unused" :"Used";
+    let newText=text==="Used"? "Fresh" :"Used";
     setText(newText);
   }
 
@@ -38,18 +40,33 @@ export const OverviewIVRData = (props) => {
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: "primary.main",
+              backgroundColor: "secondary.main",
               height: 56,
               width: 56,
             }}
           >
             <SvgIcon>
-            <ListBulletIcon />
+            <SpeakerWaveIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
 
-        <CardActions sx={{ justifyContent: "flex-end" }} style={{ "marginBottom": "-25px" }}>
+        <CardActions sx={{ justifyContent: "space-between" }} style={{ "marginBottom": "-25px" }}>
+        <Button
+            color="text.secondary"
+            endIcon={
+              <SvgIcon fontSize="small">
+              <ArrowDownOnSquareIcon />
+            </SvgIcon>
+            }
+            size="small"
+            variant="caption"
+            onClick={()=>{
+              handleDownload(callingData,text)
+            }}
+            >
+            Download
+          </Button>
           <Button
             color="inherit"
             endIcon={
@@ -63,7 +80,7 @@ export const OverviewIVRData = (props) => {
               toggle(text);
             }}
           >
-             {`View ${text==="Used"?"Unused":"Used"}`}
+             {`View ${text==="Used"?"Fresh":"Used"}`}
           </Button>
          
         </CardActions>

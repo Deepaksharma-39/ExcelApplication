@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import CurrencyRupeeIcon from '@heroicons/react/24/solid/CurrencyRupeeIcon';
 
 import {
   Avatar,
@@ -14,6 +14,8 @@ import {
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { filterDataByBank } from "src/utils/filter-data";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import { handleDownload } from "src/utils/download-data";
 
 export const OverviewSBIBankData = (props) => {
   const { sx, data } = props;
@@ -39,18 +41,33 @@ export const OverviewSBIBankData = (props) => {
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: "warning.main",
+              backgroundColor: "warning.dark",
               height: 56,
               width: 56,
             }}
           >
             <SvgIcon>
-            <ListBulletIcon />
+            <CurrencyRupeeIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
 
-        <CardActions sx={{ justifyContent: "flex-end" }} style={{ "marginBottom": "-25px" }}>
+        <CardActions sx={{ justifyContent: "space-between" }} style={{ "marginBottom": "-25px" }}>
+        <Button
+            color="text.secondary"
+            endIcon={
+              <SvgIcon fontSize="small">
+              <ArrowDownOnSquareIcon />
+            </SvgIcon>
+            }
+            size="small"
+            variant="caption"
+            onClick={()=>{
+              handleDownload(callingData,text)
+            }}
+            >
+            Download
+          </Button>
           <Button
             color="inherit"
             endIcon={

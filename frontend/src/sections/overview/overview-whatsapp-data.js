@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
+import ChatBubbleLeftRightIcon from "@heroicons/react/24/solid/ChatBubbleLeftRightIcon";
 import {
   Avatar,
   Button,
@@ -13,6 +13,8 @@ import {
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import { useState } from "react";
 import { filterDataByStatus } from "src/utils/filter-data";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import { handleDownload } from "src/utils/download-data";
 
 export const OverviewWhatsAppData = (props) => {
   const { sx, data } = props;
@@ -20,7 +22,7 @@ export const OverviewWhatsAppData = (props) => {
   let callingData = filterDataByStatus(data, "WHATS APP", text.toUpperCase());
  
   const toggle=(text)=>{
-    let newText=text==="Used"? "Unused" :"Used";
+    let newText=text==="Used"? "Fresh" :"Used";
     setText(newText);
   }
 
@@ -44,12 +46,27 @@ export const OverviewWhatsAppData = (props) => {
             }}
           >
             <SvgIcon>
-              <UsersIcon />
+              <ChatBubbleLeftRightIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
 
-        <CardActions sx={{ justifyContent: "flex-end" }} style={{ "marginBottom": "-20px" }}>
+        <CardActions sx={{ justifyContent: "space-between" }} style={{ "marginBottom": "-25px" }}>
+        <Button
+            color="text.secondary"
+            endIcon={
+              <SvgIcon fontSize="small">
+              <ArrowDownOnSquareIcon />
+            </SvgIcon>
+            }
+            size="small"
+            variant="caption"
+            onClick={()=>{
+              handleDownload(callingData,text)
+            }}
+            >
+            Download
+          </Button>
         <Button
             color="inherit"
             endIcon={
@@ -63,7 +80,7 @@ export const OverviewWhatsAppData = (props) => {
               toggle(text);
             }}
           >
-               {`View ${text==="Used"?"Unused":"Used"}`}
+               {`View ${text==="Used"?"Fresh":"Used"}`}
           </Button>
         
         </CardActions>

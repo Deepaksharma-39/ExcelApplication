@@ -18,7 +18,6 @@ import { OverviewSBIBankData } from "src/sections/overview/overview-sbiBanking-d
 const Page = () => {
   const { data } = useData();
 
-  const totalData = data.length;
   const cityCounts = overallData(data);
 
   return (
@@ -36,7 +35,7 @@ const Page = () => {
         <Container maxWidth="xl">
           <Grid container spacing={1} >
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewData sx={{ height: "100%" }} value={totalData} />
+              <OverviewData sx={{ height: "100%" }} data={data} />
             </Grid>
 
             <Grid xs={12} sm={6} lg={3}>
@@ -67,7 +66,7 @@ const Page = () => {
               <OverviewSBIBankData sx={{ height: "100%" }} data={data} />
             </Grid>
 
-            <Grid xs={12} md={12} lg={8} sx={{width: "100px"}}>
+            <Grid xs={12} md={6} lg={4}>
               <OverviewCityCount cities={cityCounts} sx={{ height: "100%"}} />
             </Grid>
 

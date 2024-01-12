@@ -1,7 +1,12 @@
 import express from "express";
-import { compareDataWithDB, findByCity, findByName, findByPan, findByPhone, findByemail, getPaginatedResult, getResult, test, testUpdate } from "../controllers/text.js";
+import { compareDataWithDB, findByCity, findByName, findByPan, findByPhone, findByemail, getPaginatedResult, getResult, test, testUpdate, upload } from "../controllers/text.js";
 
 const testRouter = express.Router();
+
+
+testRouter.get('/read', getResult);
+
+testRouter.post('/upload', upload);
 
 testRouter.post('/test', test);
 
@@ -9,7 +14,7 @@ testRouter.post('/update', testUpdate);
 
 testRouter.post('/compare', compareDataWithDB);
 
-testRouter.get('/read', getResult);
+
 
 testRouter.get(`/readPagination`, getPaginatedResult);
 

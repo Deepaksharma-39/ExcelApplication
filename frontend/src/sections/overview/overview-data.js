@@ -12,10 +12,12 @@ import {
 import { ArrowRightIcon } from "@mui/x-date-pickers";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import { useRouter } from "next/router";
+import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
+import { handleDownload } from "src/utils/download-data";
 
 
 export const OverviewData = (props) => {
-  const { sx, value } = props;
+  const { sx, data } = props;
   const router = useRouter();
   return (
     <>
@@ -29,12 +31,12 @@ export const OverviewData = (props) => {
             <Typography color="text.secondary" variant="overline">
               Total Data
             </Typography>
-            <Typography variant="h4">{value}</Typography>
+            <Typography variant="h4">{data.length}</Typography>
           
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: "error.main",
+              backgroundColor: "error.man",
               height: 56,
               width: 56,
             }}
@@ -44,7 +46,22 @@ export const OverviewData = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        <CardActions sx={{ justifyContent: "flex-end" }} style={{ "marginBottom": "-25px"}}>
+        <CardActions sx={{ justifyContent: "space-between" }} style={{ "marginBottom": "-25px"}}>
+        <Button
+            color="text.secondary"
+            endIcon={
+              <SvgIcon fontSize="small">
+              <ArrowDownOnSquareIcon />
+            </SvgIcon>
+            }
+            size="small"
+            variant="caption"
+            onClick={()=>{
+              handleDownload(data)
+            }}
+            >
+            Download
+          </Button>
           <Button
             color="text.secondary"
             endIcon={
@@ -60,6 +77,7 @@ export const OverviewData = (props) => {
             >
             View all
           </Button>
+         
         </CardActions>
       </CardContent>
     </Card>
